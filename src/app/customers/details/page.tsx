@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { customerRepo } from '@/lib/db/customerRepo';
 import { visitRepo, promiseRepo } from '@/lib/db/visitRepo';
 import { paymentRepo } from '@/lib/db/paymentRepo';
@@ -12,9 +12,17 @@ import VisitModal from '@/components/features/VisitModal';
 import { getDb } from '@/lib/db/database';
 
 export default function CustomerDetailPage() {
-  const params = useParams();
   const router = useRouter();
-  const id = params.id as string;
+  const [id, setId] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const customerId = params.get('id');
+      if (customerId) setId(customerId);
+      else setLoading(false);
+    }
+  }, []);
 
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [visits, setVisits] = useState<Visit[]>([]);
@@ -25,16 +33,16 @@ export default function CustomerDetailPage() {
 
   const [isVisitModalOpen, setIsVisitModalOpen] = useState(false);
 
-  const loadData = async () => {
+  const loadData = async (customerId: string) => {
     try {
-      const cust = await customerRepo.getById(id);
+      const cust = await customerRepo.getById(customerId);
       if (cust) {
         setCustomer(cust);
         const [v, p, pay, inv] = await Promise.all([
-          visitRepo.getByCustomer(id),
-          promiseRepo.getByCustomer(id),
-          paymentRepo.getByCustomer(id),
-          getDb().invoices.where('customerId').equals(id).reverse().sortBy('date'),
+          visitRepo.getByCustomer(customerId),
+          promiseRepo.getByCustomer(customerId),
+          paymentRepo.getByCustomer(customerId),
+          getDb().invoices.where('customerId').equals(customerId).reverse().sortBy('date'),
         ]);
         setVisits(v);
         setPromises(p);
@@ -49,7 +57,7 @@ export default function CustomerDetailPage() {
   };
 
   useEffect(() => {
-    if (id) loadData();
+    if (id) loadData(id);
   }, [id]);
 
   if (loading) {
@@ -219,7 +227,7 @@ export default function CustomerDetailPage() {
           onClose={() => setIsVisitModalOpen(false)}
           onSuccess={() => {
             setIsVisitModalOpen(false);
-            loadData(); // Refresh data
+            if (id) loadData(id); // Refresh data
           }}
         />
       )}

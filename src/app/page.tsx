@@ -225,7 +225,7 @@ export default function DashboardPage() {
             {highRisk.map(customer => (
               <Link
                 key={customer.id}
-                href={`/customers/${customer.id}`}
+                href={`/customers/details?id=${customer.id}`}
                 className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
               >
                 <div>
