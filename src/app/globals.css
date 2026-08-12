@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
+/* =================== CSS Variables =================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: #1e40af;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #475569;
+  --muted: #f1f5f9;
+  --muted-foreground: #94a3b8;
+  --accent: #dbeafe;
+  --accent-foreground: #1e40af;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #1e40af;
+  --radius: 0.75rem;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Status Colors */
+  --green: #16a34a;
+  --yellow: #d97706;
+  --orange: #ea580c;
+  --red: #dc2626;
+
+  /* Sidebar */
+  --sidebar-bg: #0f172a;
+  --sidebar-fg: #cbd5e1;
+  --sidebar-active: #1e40af;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #0f172a;
+    --foreground: #f8fafc;
+    --card: #1e293b;
+    --card-foreground: #f8fafc;
+    --primary: #3b82f6;
+    --primary-foreground: #ffffff;
+    --secondary: #1e293b;
+    --secondary-foreground: #94a3b8;
+    --muted: #1e293b;
+    --muted-foreground: #64748b;
+    --accent: #1e3a5f;
+    --accent-foreground: #93c5fd;
+    --border: #334155;
+    --input: #334155;
+    --sidebar-bg: #020617;
+    --sidebar-fg: #94a3b8;
   }
 }
 
+/* =================== Base =================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  direction: rtl;
+  font-size: 16px;
+}
+
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Cairo', 'Tajawal', 'Segoe UI', Arial, sans-serif;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* =================== Typography =================== */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--foreground);
+}
+
+/* =================== Scrollbar =================== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--muted);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--muted-foreground);
+  border-radius: 3px;
+}
+
+/* =================== Risk Level Colors =================== */
+.risk-green  { color: var(--green); }
+.risk-yellow { color: var(--yellow); }
+.risk-orange { color: var(--orange); }
+.risk-red    { color: var(--red); }
+
+.risk-bg-green  { background-color: #dcfce7; color: #15803d; }
+.risk-bg-yellow { background-color: #fef9c3; color: #a16207; }
+.risk-bg-orange { background-color: #ffedd5; color: #c2410c; }
+.risk-bg-red    { background-color: #fee2e2; color: #b91c1c; }
+
+/* Dark mode risk badges */
+@media (prefers-color-scheme: dark) {
+  .risk-bg-green  { background-color: #14532d; color: #86efac; }
+  .risk-bg-yellow { background-color: #713f12; color: #fde68a; }
+  .risk-bg-orange { background-color: #7c2d12; color: #fed7aa; }
+  .risk-bg-red    { background-color: #7f1d1d; color: #fca5a5; }
+}
+
+/* =================== Status Badge =================== */
+.status-active   { background-color: #dcfce7; color: #15803d; }
+.status-overdue  { background-color: #fee2e2; color: #b91c1c; }
+.status-paid     { background-color: #dbeafe; color: #1d4ed8; }
+.status-inactive { background-color: #f1f5f9; color: #64748b; }
+
+/* =================== Touch Target =================== */
+.touch-target {
+  min-height: 48px;
+  min-width: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =================== Card =================== */
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.07);
+}
+
+/* =================== Animations =================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes pulse-once {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-pulse-once {
+  animation: pulse-once 1s ease-in-out 1;
+}
+
+/* =================== Print =================== */
+@media print {
+  .no-print { display: none !important; }
 }

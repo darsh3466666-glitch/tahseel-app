@@ -1,0 +1,162 @@
+[
+  {
+    "order": 1,
+    "customerName": "عدلي عبدالهادي (ابو شويقي)",
+    "targetAmount": 213395,
+    "region": "ابو شويقي",
+    "lastPaymentDate": "2026-08-10",
+    "rating": "سيء ⚫ (بطيء جداً)"
+  },
+  {
+    "order": 2,
+    "customerName": "رمضان جابر عبد الحميد (قيصر)",
+    "targetAmount": 8850,
+    "region": "قيصر",
+    "lastPaymentDate": "2026-06-09",
+    "rating": "ممتاز 🟢 (سريع الدوران)"
+  },
+  {
+    "order": 3,
+    "customerName": "محمد عدلي (الوسطي)",
+    "targetAmount": 3035,
+    "region": "الوسطى",
+    "lastPaymentDate": "2026-07-23",
+    "rating": "ممتاز 🟢 (سريع الدوران)"
+  },
+  {
+    "order": 4,
+    "customerName": "مفرح سيد فهيم",
+    "targetAmount": 165400,
+    "region": "ابو شويقي",
+    "lastPaymentDate": "2026-04-08",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 5,
+    "customerName": "راضي منصور",
+    "targetAmount": 540,
+    "region": "الهداهده",
+    "lastPaymentDate": "2026-05-31",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 6,
+    "customerName": "محمود ابو زيد - الهداهده",
+    "targetAmount": 17980,
+    "region": "الهداهده",
+    "lastPaymentDate": "2026-06-07",
+    "rating": "سيء ⚫ (بطيء جداً)"
+  },
+  {
+    "order": 7,
+    "customerName": "عيد احمد عبد الفتاح(ابو السعود)",
+    "targetAmount": 626150,
+    "region": "ابو السعود",
+    "lastPaymentDate": "2026-08-10",
+    "rating": "ممتاز 🟢 (سريع الدوران)"
+  },
+  {
+    "order": 8,
+    "customerName": "محمد احمد (الوسطي)",
+    "targetAmount": 19065,
+    "region": "مرعب",
+    "lastPaymentDate": "2026-07-28",
+    "rating": "جيد 🟡 (منتظم)"
+  },
+  {
+    "order": 9,
+    "customerName": "اسامه يحيي (العياط)",
+    "targetAmount": 1470,
+    "region": "العياط",
+    "lastPaymentDate": "2026-06-02",
+    "rating": "ممتاز 🟢 (سريع الدوران)"
+  },
+  {
+    "order": 10,
+    "customerName": "عارف صلاح قيصر",
+    "targetAmount": 96965,
+    "region": "قيصر",
+    "lastPaymentDate": "2026-06-03",
+    "rating": "سيء ⚫ (بطيء جداً)"
+  },
+  {
+    "order": 11,
+    "customerName": "احمد سلامه (حلوان)",
+    "targetAmount": 77120,
+    "region": "حلوان",
+    "lastPaymentDate": "2026-07-02",
+    "rating": "ممتاز 🟢 (سريع الدوران)"
+  },
+  {
+    "order": 12,
+    "customerName": "الحاج / ابراهيم ابو سريع",
+    "targetAmount": 107130,
+    "region": "أطفيح",
+    "lastPaymentDate": "2026-06-17",
+    "rating": "جيد 🟡 (منتظم)"
+  },
+  {
+    "order": 13,
+    "customerName": "سيد محمود سيد (السحابه)",
+    "targetAmount": 1600,
+    "region": "السحابه",
+    "lastPaymentDate": "2026-07-23",
+    "rating": "سيء ⚫ (بطيء جداً)"
+  },
+  {
+    "order": 14,
+    "customerName": "محمد فتحي حسن(مرعب)",
+    "targetAmount": 1400,
+    "region": "مرعب",
+    "lastPaymentDate": "2026-06-27",
+    "rating": "سيء ⚫ (بطيء جداً)"
+  },
+  {
+    "order": 15,
+    "customerName": "محمد شعبان هاشم",
+    "targetAmount": 1570,
+    "region": "دوار",
+    "lastPaymentDate": "2026-02-18",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 16,
+    "customerName": "مرسي (مدشه)",
+    "targetAmount": 250,
+    "region": "مدشة",
+    "lastPaymentDate": "2026-05-24",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 17,
+    "customerName": "عطيه محمد غريب (العياط)",
+    "targetAmount": 5945,
+    "region": "العياط",
+    "lastPaymentDate": "2026-06-02",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 18,
+    "customerName": "محمود اسماعيل",
+    "targetAmount": 60000,
+    "region": "طريق اسيوط",
+    "lastPaymentDate": "2025-08-27",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 19,
+    "customerName": "عمر زين (حنس)",
+    "targetAmount": 151155,
+    "region": "حنس- مصر الجديدة",
+    "lastPaymentDate": "2025-05-29",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  },
+  {
+    "order": 20,
+    "customerName": "محمد عبد العزيز حسين (نصار)",
+    "targetAmount": 640,
+    "region": "نصار",
+    "lastPaymentDate": "2026-07-05",
+    "rating": "خطر 🔴 (متوقف/راكد)"
+  }
+]

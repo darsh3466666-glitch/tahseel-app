@@ -1,0 +1,128 @@
+[
+  {
+    "order": 1,
+    "title": "مراجعة برنامج التحصيل اليوم السابق",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": "اخر اليوم"
+  },
+  {
+    "order": 2,
+    "title": "شيت تحصيل عملاء (مصطفى)",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 3,
+    "title": "تحصيلات عملاء اليوم السابق",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 4,
+    "title": "مراجعة فواتير اليوم السابق (كميات)",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 5,
+    "title": "جرد اليوم السابق",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 6,
+    "title": "صرف علف المزرعة",
+    "status": "pending",
+    "completionRate": 0,
+    "dueTime": null
+  },
+  {
+    "order": 7,
+    "title": "مراجعة العميل النقدي",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 8,
+    "title": "مكالمة العملاء للتحصيل",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 9,
+    "title": "ادخال الفواتير",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 10,
+    "title": "تقارير المبيعات اليومية",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 11,
+    "title": "تقرير بيان الاسعار والكميات اليومي",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 12,
+    "title": "ارصدة المزارع",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 13,
+    "title": "ارسال شيت cash flow",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 14,
+    "title": "ارسال شيت خط السير",
+    "status": "done",
+    "completionRate": 1,
+    "dueTime": null
+  },
+  {
+    "order": 15,
+    "title": "بناء تصور كامل لدورة المستندية للمزرعة",
+    "status": "pending",
+    "completionRate": 0,
+    "dueTime": null
+  },
+  {
+    "order": 16,
+    "title": "مراجعة فواتير جروب الانتاج",
+    "status": "pending",
+    "completionRate": 0,
+    "dueTime": null
+  },
+  {
+    "order": 17,
+    "title": "شيت عملاء التحويلات الاسبوعية",
+    "status": "pending",
+    "completionRate": 0,
+    "dueTime": null
+  },
+  {
+    "order": 18,
+    "title": "مطابقة عد الاذون بالفواتير",
+    "status": "pending",
+    "completionRate": 0,
+    "dueTime": null
+  }
+]
