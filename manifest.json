@@ -1,0 +1,44 @@
+{
+  "name": "منظومة التحصيل",
+  "short_name": "التحصيل",
+  "description": "نظام إدارة التحصيل والعملاء",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#1e40af",
+  "orientation": "portrait-primary",
+  "lang": "ar",
+  "dir": "rtl",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "business"],
+  "shortcuts": [
+    {
+      "name": "لوحة التحكم",
+      "url": "/",
+      "description": "افتح لوحة التحكم"
+    },
+    {
+      "name": "مسار اليوم",
+      "url": "/route",
+      "description": "خط سير اليوم"
+    },
+    {
+      "name": "العملاء",
+      "url": "/customers",
+      "description": "قائمة العملاء"
+    }
+  ]
+}
