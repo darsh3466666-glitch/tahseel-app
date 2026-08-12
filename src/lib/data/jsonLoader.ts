@@ -138,7 +138,8 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
 
     // Seed today's tasks
     if (data.tasks.length > 0) {
-      const today = now.slice(0, 10);
+      const { todayISO } = await import('@/lib/utils/helpers');
+      const today = todayISO();
       const existingTasks = await db.tasks.where('date').equals(today).count();
       if (existingTasks === 0) {
         const tasks = data.tasks.map((t: any) => ({
@@ -179,7 +180,8 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
       await db.routeStops.clear();
       
       const routeId = generateId();
-      const today = now.slice(0, 10);
+      const { todayISO } = await import('@/lib/utils/helpers');
+      const today = todayISO();
       
       await db.routes.add({
         id: routeId,
