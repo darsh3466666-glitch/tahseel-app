@@ -18,15 +18,16 @@ export interface JsonDataFiles {
 
 // Fetch all JSON data files from public/data/
 export async function fetchJsonData(): Promise<JsonDataFiles | null> {
+  const t = Date.now();
   try {
     const [customers, payments, invoices, route, tasks, stats, meta] = await Promise.all([
-      fetch('/data/customers.json').then(r => r.ok ? r.json() : []),
-      fetch('/data/payments.json').then(r => r.ok ? r.json() : []),
-      fetch('/data/invoices.json').then(r => r.ok ? r.json() : []),
-      fetch('/data/route.json').then(r => r.ok ? r.json() : []),
-      fetch('/data/tasks.json').then(r => r.ok ? r.json() : []),
-      fetch('/data/stats.json').then(r => r.ok ? r.json() : {}),
-      fetch('/data/meta.json').then(r => r.ok ? r.json() : { exportedAt: '', version: 0 }),
+      fetch(`/data/customers.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/data/payments.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/data/invoices.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/data/route.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/data/tasks.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/data/stats.json?t=${t}`).then(r => r.ok ? r.json() : {}),
+      fetch(`/data/meta.json?t=${t}`).then(r => r.ok ? r.json() : { exportedAt: '', version: 0 }),
     ]);
     return { customers, payments, invoices, route, tasks, stats, meta };
   } catch {
@@ -46,7 +47,7 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
   // Fetch JSON meta first
   let meta: { exportedAt: string; version: number } = { exportedAt: '', version: 0 };
   try {
-    const res = await fetch('/data/meta.json');
+    const res = await fetch(`/data/meta.json?t=${Date.now()}`);
     if (res.ok) meta = await res.json();
   } catch {
     return { seeded: false, source: 'no_json' };
