@@ -21,13 +21,13 @@ export async function fetchJsonData(): Promise<JsonDataFiles | null> {
   const t = Date.now();
   try {
     const [customers, payments, invoices, route, tasks, stats, meta] = await Promise.all([
-      fetch(`/data/customers.json?t=${t}`).then(r => r.ok ? r.json() : []),
-      fetch(`/data/payments.json?t=${t}`).then(r => r.ok ? r.json() : []),
-      fetch(`/data/invoices.json?t=${t}`).then(r => r.ok ? r.json() : []),
-      fetch(`/data/route.json?t=${t}`).then(r => r.ok ? r.json() : []),
-      fetch(`/data/tasks.json?t=${t}`).then(r => r.ok ? r.json() : []),
-      fetch(`/data/stats.json?t=${t}`).then(r => r.ok ? r.json() : {}),
-      fetch(`/data/meta.json?t=${t}`).then(r => r.ok ? r.json() : { exportedAt: '', version: 0 }),
+      fetch(`/tahseel-app/data/customers.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/tahseel-app/data/payments.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/tahseel-app/data/invoices.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/tahseel-app/data/route.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/tahseel-app/data/tasks.json?t=${t}`).then(r => r.ok ? r.json() : []),
+      fetch(`/tahseel-app/data/stats.json?t=${t}`).then(r => r.ok ? r.json() : {}),
+      fetch(`/tahseel-app/data/meta.json?t=${t}`).then(r => r.ok ? r.json() : { exportedAt: '', version: 0 }),
     ]);
     return { customers, payments, invoices, route, tasks, stats, meta };
   } catch {
@@ -47,7 +47,7 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
   // Fetch JSON meta first
   let meta: { exportedAt: string; version: number } = { exportedAt: '', version: 0 };
   try {
-    const res = await fetch(`/data/meta.json?t=${Date.now()}`);
+    const res = await fetch(`/tahseel-app/data/meta.json?t=${Date.now()}`);
     if (res.ok) meta = await res.json();
   } catch {
     return { seeded: false, source: 'no_json' };
