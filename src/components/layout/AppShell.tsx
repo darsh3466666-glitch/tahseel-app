@@ -62,27 +62,26 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
         className={`
           fixed top-0 right-0 h-full w-64 z-50 flex flex-col
           transition-transform duration-300 ease-in-out
-          lg:translate-x-0 lg:static lg:z-auto
+          lg:translate-x-0 lg:static lg:z-auto bg-card border-l border-border
           ${isOpen ? 'translate-x-0' : 'translate-x-full'}
         `}
-        style={{ background: 'var(--sidebar-bg)' }}
       >
         {/* Logo */}
-        <div className="flex items-center justify-between p-4 border-b border-white/10">
+        <div className="flex items-center justify-between p-4 border-b border-border">
           <div>
-            <h1 className="text-white font-bold text-lg">منظومة التحصيل</h1>
-            <p className="text-slate-400 text-xs">مصطفى إبراهيم</p>
+            <h1 className="text-primary font-black text-lg tracking-tight">منظومة التحصيل</h1>
+            <p className="text-muted-foreground text-xs font-medium">مصطفى إبراهيم</p>
           </div>
           <button
             onClick={onClose}
-            className="lg:hidden text-slate-400 hover:text-white p-1"
+            className="lg:hidden text-muted-foreground hover:text-foreground p-1 rounded-md"
           >
             <X size={20} />
           </button>
         </div>
 
         {/* Nav */}
-        <nav className="flex-1 overflow-y-auto py-4 px-2">
+        <nav className="flex-1 overflow-y-auto py-4 px-3 space-y-1">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const isActive = pathname === href || (href !== '/' && pathname.startsWith(href));
             return (
@@ -91,26 +90,26 @@ function Sidebar({ isOpen, onClose }: SidebarProps) {
                 href={href}
                 onClick={onClose}
                 className={`
-                  flex items-center gap-3 px-3 py-3 rounded-lg mb-1
-                  text-sm font-medium transition-all duration-150
+                  flex items-center gap-3 px-3 py-3 rounded-xl
+                  text-sm font-bold transition-all duration-200
                   touch-target
                   ${isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-slate-400 hover:bg-white/10 hover:text-white'
+                    ? 'bg-primary/10 text-primary'
+                    : 'text-muted-foreground hover:bg-muted hover:text-foreground'
                   }
                 `}
               >
-                <Icon size={18} className="shrink-0" />
+                <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="shrink-0" />
                 <span>{label}</span>
-                {isActive && <ChevronLeft size={14} className="mr-auto" />}
+                {isActive && <ChevronLeft size={16} strokeWidth={2.5} className="mr-auto opacity-70" />}
               </Link>
             );
           })}
         </nav>
 
         {/* Footer */}
-        <div className="p-4 border-t border-white/10">
-          <p className="text-slate-500 text-xs text-center">
+        <div className="p-4 border-t border-border bg-muted/20">
+          <p className="text-muted-foreground text-xs text-center font-medium">
             النسخة 1.0.0 — يعمل بدون إنترنت
           </p>
         </div>
@@ -165,8 +164,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4">
-          <div className="animate-fade-in">
+        <main className="flex-1 overflow-y-auto p-4 bg-background">
+          <div className="animate-fade-in w-full max-w-5xl mx-auto">
             {children}
           </div>
         </main>

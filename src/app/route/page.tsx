@@ -135,38 +135,40 @@ export default function DailyRoutePage() {
               {expandedRegions[region] && (
                 <div className="divide-y divide-border/50 bg-background/50">
                   {data.stops.map(stop => (
-                    <div key={stop.id} className="p-4 hover:bg-muted/20 transition-colors group">
-                      <div className="flex justify-between items-center gap-4">
+                    <div key={stop.id} className="p-5 hover:bg-muted/30 transition-colors group">
+                      <div className="flex flex-col items-center justify-center gap-3 text-center max-w-sm mx-auto">
                         <div 
-                          className="cursor-pointer flex-1"
+                          className="cursor-pointer"
                           onClick={() => router.push(`/customers/details?id=${stop.customerId}`)}
                         >
-                          <h3 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors leading-tight mb-1.5">
+                          <h3 className="font-bold text-foreground text-base group-hover:text-primary transition-colors leading-tight mb-1.5">
                             {stop.customerName}
                           </h3>
-                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-medium">
+                          <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
                             المستهدف: <span className="font-bold text-foreground">{formatCurrency(stop.targetAmount)}</span>
                           </p>
                         </div>
                         
-                        {stop.status === 'visited' ? (
-                          <div className="flex items-center gap-1.5 text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide">
-                            <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
-                            تمت
-                          </div>
-                        ) : stop.status === 'skipped' ? (
-                          <div className="flex items-center gap-1.5 text-orange-500 bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide">
-                            <Clock className="w-4 h-4" strokeWidth={2.5} />
-                            مؤجل
-                          </div>
-                        ) : (
-                          <button 
-                            onClick={() => openVisitModal(stop)}
-                            className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:bg-primary/90 active:scale-95 transition-all whitespace-nowrap"
-                          >
-                            تسجيل رد
-                          </button>
-                        )}
+                        <div>
+                          {stop.status === 'visited' ? (
+                            <div className="flex items-center justify-center gap-1.5 text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl text-sm font-bold tracking-wide">
+                              <CheckCircle2 className="w-5 h-5" strokeWidth={2.5} />
+                              تمت
+                            </div>
+                          ) : stop.status === 'skipped' ? (
+                            <div className="flex items-center justify-center gap-1.5 text-orange-500 bg-orange-500/10 border border-orange-500/20 px-4 py-2 rounded-xl text-sm font-bold tracking-wide">
+                              <Clock className="w-5 h-5" strokeWidth={2.5} />
+                              مؤجل
+                            </div>
+                          ) : (
+                            <button 
+                              onClick={() => openVisitModal(stop)}
+                              className="bg-primary text-primary-foreground px-6 py-2.5 rounded-xl text-sm font-bold shadow-md hover:shadow-lg hover:bg-primary/90 active:scale-95 transition-all w-full"
+                            >
+                              تسجيل رد
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
                   ))}
