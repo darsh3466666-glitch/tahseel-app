@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { routeRepo } from '@/lib/db/routeRepo';
 import { customerRepo } from '@/lib/db/customerRepo';
 import type { RouteStop, Customer } from '@/types/domain';
-import { Map, CheckCircle, Clock, Navigation, CheckCircle2, ChevronDown, ChevronUp } from 'lucide-react';
+import { Map, CheckCircle, Clock, Navigation, CheckCircle2, ChevronDown, ChevronUp, Printer } from 'lucide-react';
 import { formatCurrency } from '@/lib/utils/helpers';
 import VisitModal from '@/components/features/VisitModal';
 
@@ -87,12 +87,21 @@ export default function DailyRoutePage() {
   return (
     <div className="pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-20 bg-background/90 backdrop-blur-xl border-b border-border/50 p-5">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <Map className="w-5 h-5" strokeWidth={2.5} />
+      <div className="sticky top-0 z-20 bg-background/90 backdrop-blur-xl border-b border-border/50 p-5 no-print">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <Map className="w-5 h-5" strokeWidth={2.5} />
+            </div>
+            <h1 className="text-xl font-bold tracking-tight">سير العمل اليومي</h1>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">سير العمل اليومي</h1>
+          <button 
+            onClick={() => window.print()} 
+            className="flex items-center gap-2 bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded-xl text-sm font-bold transition-colors"
+          >
+            <Printer size={16} />
+            <span className="hidden sm:inline">طباعة / واتساب</span>
+          </button>
         </div>
         <div className="bg-muted/30 p-4 rounded-2xl border border-border/50">
           <div className="flex justify-between text-sm mb-2">
@@ -135,21 +144,46 @@ export default function DailyRoutePage() {
               {expandedRegions[region] && (
                 <div className="divide-y divide-border/50 bg-background/50">
                   {data.stops.map(stop => (
-                    <div key={stop.id} className="p-5 hover:bg-muted/30 transition-colors group">
-                      <div className="flex flex-col items-center justify-center gap-3 text-center max-w-sm mx-auto">
+                    <div key={stop.id} className="p-5 hover:bg-muted/30 transition-colors group print:break-inside-avoid print:p-2 print:border-b print:border-black/20">
+                      <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
                         <div 
-                          className="cursor-pointer"
+                          className="cursor-pointer mb-2 print:mb-0"
                           onClick={() => router.push(`/customers/details?id=${stop.customerId}`)}
                         >
-                          <h3 className="font-bold text-foreground text-base group-hover:text-primary transition-colors leading-tight mb-1.5">
-                            {stop.customerName}
-                          </h3>
-                          <p className="text-xs text-muted-foreground uppercase tracking-wider font-medium">
-                            المستهدف: <span className="font-bold text-foreground">{formatCurrency(stop.targetAmount)}</span>
-                          </p>
+                          <div className="flex flex-col md:flex-row md:items-center justify-center gap-2 mb-1.5">
+                            <h3 className="font-bold text-foreground text-base md:text-lg group-hover:text-primary transition-colors leading-tight">
+                              {stop.customerName}
+                            </h3>
+                            {stop.rating && (
+                              <span className="text-[10px] bg-muted px-2 py-0.5 rounded-full text-muted-foreground font-bold">
+                                {stop.rating}
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs mt-3 bg-card p-3 rounded-xl border border-border/50 shadow-sm print:shadow-none print:border-black/20 text-center">
+                            <div>
+                              <span className="block text-muted-foreground mb-0.5 text-[10px]">المديونية المتبقية</span>
+                              <span className="font-bold text-foreground">{formatCurrency(stop.remainingDebt || stop.targetAmount)}</span>
+                            </div>
+                            <div>
+                              <span className="block text-muted-foreground mb-0.5 text-[10px]">المسحوب / المدفوع</span>
+                              <span className="font-bold text-foreground">{formatCurrency(stop.totalWithdrawn || 0)} / {formatCurrency(stop.totalPaid || 0)}</span>
+                            </div>
+                            <div>
+                              <span className="block text-muted-foreground mb-0.5 text-[10px]">آخر فاتورة / سداد</span>
+                              <span className="font-bold text-foreground">
+                                {stop.lastInvoiceDate ? stop.lastInvoiceDate.slice(5) : '-'} / {stop.lastPaymentDate ? stop.lastPaymentDate.slice(5) : '-'}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="block text-muted-foreground mb-0.5 text-[10px]">آخر رد</span>
+                              <span className="font-bold text-foreground truncate">{stop.lastReply || '-'}</span>
+                            </div>
+                          </div>
                         </div>
                         
-                        <div>
+                        <div className="w-full sm:w-auto no-print">
                           {stop.status === 'visited' ? (
                             <div className="flex items-center justify-center gap-1.5 text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-4 py-2 rounded-xl text-sm font-bold tracking-wide">
                               <CheckCircle2 className="w-5 h-5" strokeWidth={2.5} />

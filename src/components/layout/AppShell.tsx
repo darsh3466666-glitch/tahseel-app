@@ -31,11 +31,7 @@ const NAV_ITEMS = [
   { href: '/visits',      label: 'الزيارات',           icon: Eye },
   { href: '/promises',    label: 'الوعود',             icon: HandshakeIcon },
   { href: '/debt',        label: 'تحليل المديونية',   icon: TrendingUp },
-  { href: '/tasks',       label: 'المهام اليومية',    icon: CheckSquare },
-  { href: '/notifications', label: 'الإشعارات',       icon: Bell },
   { href: '/reports',     label: 'التقارير',           icon: BarChart3 },
-  { href: '/import',      label: 'استيراد / تصدير',  icon: Upload },
-  { href: '/backup',      label: 'النسخ الاحتياطي',  icon: HardDrive },
   { href: '/settings',    label: 'الإعدادات',         icon: Settings },
 ];
 

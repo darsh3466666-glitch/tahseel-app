@@ -25,6 +25,12 @@ const RISK_FILTERS: { label: string; value: RiskLevel | '' }[] = [
   { label: '🔴 عالي', value: 'RED' },
 ];
 
+const COLLECTOR_FILTERS: { label: string; value: string }[] = [
+  { label: 'الكل', value: '' },
+  { label: 'مصطفى', value: 'مصطفى' },
+  { label: 'عبد الرحمن', value: 'عبد الرحمن' },
+];
+
 function CustomerRow({ customer }: { customer: Customer }) {
   const riskClass = RISK_COLORS[customer.riskLevel] || 'risk-bg-yellow';
 
@@ -38,15 +44,23 @@ function CustomerRow({ customer }: { customer: Customer }) {
         {/* Name + region */}
         <div className="flex-1 min-w-0">
           <p className="font-medium text-sm truncate">{customer.name}</p>
-          <div className="flex items-center gap-2 mt-0.5">
+          <div className="flex items-center gap-2 mt-0.5 flex-wrap">
             <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
               {customer.code}
             </span>
             {customer.region && (
               <>
-                <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>•</span>
-                <span className="text-xs" style={{ color: 'var(--muted-foreground)' }}>
+                <span className="text-xs text-muted-foreground">•</span>
+                <span className="text-xs text-muted-foreground">
                   {customer.region}
+                </span>
+              </>
+            )}
+            {customer.collectorName && (
+              <>
+                <span className="text-xs text-muted-foreground">•</span>
+                <span className="text-xs px-2 py-0.5 rounded-md bg-secondary text-secondary-foreground font-medium">
+                  {customer.collectorName}
                 </span>
               </>
             )}
@@ -73,23 +87,35 @@ export default function CustomersPage() {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<CustomerStatus | ''>('');
   const [riskFilter, setRiskFilter] = useState<RiskLevel | ''>('');
+  const [collectorFilter, setCollectorFilter] = useState<string>('');
   const [showFilters, setShowFilters] = useState(false);
 
   const load = useCallback(async () => {
     try {
       const { customerRepo } = await import('@/lib/db/customerRepo');
-      const results = await customerRepo.getAll({
+      let results = await customerRepo.getAll({
         search: search || undefined,
         status: statusFilter || undefined,
         riskLevel: riskFilter || undefined,
+        collectorName: collectorFilter || undefined,
       });
+      
+      // Sort priority: Collection date == today comes first
+      const { todayISO } = await import('@/lib/utils/helpers');
+      const today = todayISO();
+      results = results.sort((a, b) => {
+        const aToday = a.collectionDate === today ? 1 : 0;
+        const bToday = b.collectionDate === today ? 1 : 0;
+        return bToday - aToday;
+      });
+
       setCustomers(results);
     } catch (err) {
       console.error(err);
     } finally {
       setLoading(false);
     }
-  }, [search, statusFilter, riskFilter]);
+  }, [search, statusFilter, riskFilter, collectorFilter]);
 
   useEffect(() => {
     load();
@@ -142,14 +168,14 @@ export default function CustomersPage() {
       {showFilters && (
         <div className="card space-y-3 animate-fade-in">
           <div>
-            <p className="text-xs font-medium mb-2" style={{ color: 'var(--muted-foreground)' }}>الحالة</p>
+            <p className="text-xs font-medium mb-2 text-muted-foreground">المحصّل</p>
             <div className="flex flex-wrap gap-2">
-              {STATUS_FILTERS.map(f => (
+              {COLLECTOR_FILTERS.map(f => (
                 <button
                   key={f.value}
-                  onClick={() => setStatusFilter(f.value as any)}
+                  onClick={() => setCollectorFilter(f.value)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    statusFilter === f.value ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-white/10'
+                    collectorFilter === f.value ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
                   {f.label}
@@ -158,14 +184,30 @@ export default function CustomersPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs font-medium mb-2" style={{ color: 'var(--muted-foreground)' }}>مستوى الخطورة</p>
+            <p className="text-xs font-medium mb-2 text-muted-foreground">الحالة</p>
+            <div className="flex flex-wrap gap-2">
+              {STATUS_FILTERS.map(f => (
+                <button
+                  key={f.value}
+                  onClick={() => setStatusFilter(f.value as any)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
+                    statusFilter === f.value ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                  }`}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-medium mb-2 text-muted-foreground">مستوى الخطورة</p>
             <div className="flex flex-wrap gap-2">
               {RISK_FILTERS.map(f => (
                 <button
                   key={f.value}
                   onClick={() => setRiskFilter(f.value as any)}
                   className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                    riskFilter === f.value ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-white/10'
+                    riskFilter === f.value ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
                   }`}
                 >
                   {f.label}

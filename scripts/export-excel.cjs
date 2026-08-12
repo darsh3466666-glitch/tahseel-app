@@ -62,6 +62,7 @@ function parseCustomers(wb) {
     region:      findCol(h, ['خط السير','المنطقة']),
     withdrawn:   findCol(h, ['اجمالي المسحوب','المسحوب']),
     paid:        findCol(h, ['اجمالي المدفوع','المدفوع']),
+    collector:   findCol(h, ['المسؤل عن التحصيل','المندوب','المحصل']),
   };
 
   return rows.slice(1)
@@ -115,6 +116,7 @@ function parseCustomers(wb) {
         lastVisitDate:   null,
         cycleStartDate:  null,
         agreements:      '',
+        collectorName:   ci.collector >= 0 ? str(r[ci.collector]) : '',
       };
     });
 }
@@ -162,21 +164,33 @@ function parseRoute(wb) {
   const rows = getSheet(wb, 'خط_سير');
   if (rows.length < 2) return [];
   const h = rows[0];
-  const colName   = findCol(h, ['اسم العميل','اسم']);
-  const colTarget = findCol(h, ['المديونية المستهدفة','المستهدفة']);
-  const colRegion = findCol(h, ['خط السير','المنطقة']);
-  const colLastPay= findCol(h, ['تاريخ اخر سداد']);
-  const colRating = findCol(h, ['تقييم العميل']);
+  const colName     = findCol(h, ['اسم العميل','اسم']);
+  const colTarget   = findCol(h, ['المديونية المستهدفة','المستهدفة']);
+  const colRegion   = findCol(h, ['خط السير','المنطقة']);
+  const colLastPay  = findCol(h, ['تاريخ اخر سداد']);
+  const colLastInv  = findCol(h, ['تاريخ اخر فاتورة']);
+  const colReply    = findCol(h, ['اخر رد من العميل']);
+  const colWithdrawn= findCol(h, ['اجمالي المسحوب']);
+  const colPaid     = findCol(h, ['اجمالي المدفوع']);
+  const colRem      = findCol(h, ['المديونية المتبقية']);
+  const colRatio    = findCol(h, ['نسبة التحصيل']);
+  const colRating   = findCol(h, ['تقييم العميل']);
 
   return rows.slice(1)
     .filter(r => str(r[colName]).length > 1)
     .map((r, i) => ({
-      order:          i + 1,
-      customerName:   normalizeAr(str(r[colName])),
-      targetAmount:   num(r[colTarget]),
-      region:         colRegion >= 0 ? str(r[colRegion]) : '',
+      order:           i + 1,
+      customerName:    normalizeAr(str(r[colName])),
+      targetAmount:    num(r[colTarget]),
+      region:          colRegion >= 0 ? str(r[colRegion]) : '',
       lastPaymentDate: excelDateToISO(r[colLastPay]),
-      rating:         colRating >= 0 ? str(r[colRating]) : '',
+      lastInvoiceDate: excelDateToISO(r[colLastInv]),
+      lastReply:       colReply >= 0 ? str(r[colReply]) : '',
+      totalWithdrawn:  num(r[colWithdrawn]),
+      totalPaid:       num(r[colPaid]),
+      remainingDebt:   num(r[colRem]),
+      collectionRatio: num(r[colRatio]),
+      rating:          colRating >= 0 ? str(r[colRating]) : '',
     }));
 }
 

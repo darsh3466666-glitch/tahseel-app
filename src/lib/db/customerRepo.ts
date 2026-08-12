@@ -12,6 +12,7 @@ export interface CustomerFilters {
   status?: CustomerStatus;
   riskLevel?: RiskLevel;
   region?: string;
+  collectorName?: string;
   search?: string;
 }
 
@@ -31,6 +32,9 @@ export const customerRepo = {
 
     if (filters?.region) {
       results = results.filter(c => c.region === filters.region);
+    }
+    if (filters?.collectorName) {
+      results = results.filter(c => c.collectorName === filters.collectorName);
     }
     if (filters?.search) {
       const q = filters.search.toLowerCase();

@@ -93,6 +93,7 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
       riskLevel:       c.riskLevel || 'YELLOW',
       riskScore:       c.riskScore || 50,
       previousBalance: c.previousBalance || 0,
+      collectorName:   c.collectorName || '',
       createdAt:       now,
       updatedAt:       now,
     }));
@@ -203,6 +204,14 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
         status: 'pending' as const,
         targetAmount: r.targetAmount || 0,
         region: r.region || '',
+        lastPaymentDate: r.lastPaymentDate || null,
+        lastInvoiceDate: r.lastInvoiceDate || null,
+        lastReply: r.lastReply || '',
+        totalWithdrawn: r.totalWithdrawn || 0,
+        totalPaid: r.totalPaid || 0,
+        remainingDebt: r.remainingDebt || 0,
+        collectionRatio: r.collectionRatio || 0,
+        rating: r.rating || '',
       }));
 
       await db.routeStops.bulkAdd(routeStops);

@@ -35,6 +35,7 @@ export interface Customer {
   riskLevel: RiskLevel;
   riskScore: number;      // 0–100
   previousBalance: number; // الرصيد السابق
+  collectorName: string;   // المسئول عن التحصيل
   createdAt: string;
   updatedAt: string;
 }
@@ -126,6 +127,14 @@ export interface RouteStop {
   status: RouteStopStatus;
   targetAmount: number;
   region: string;
+  lastPaymentDate?: string | null;
+  lastInvoiceDate?: string | null;
+  lastReply?: string;
+  totalWithdrawn?: number;
+  totalPaid?: number;
+  remainingDebt?: number;
+  collectionRatio?: number;
+  rating?: string;
 }
 
 // ── Task ──────────────────────────────────────────────────
