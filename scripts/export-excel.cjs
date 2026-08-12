@@ -11,7 +11,7 @@ const fs   = require('fs');
 const path = require('path');
 
 const EXCEL_PATH = 'D:\\Mostafa Ibrahim\\شيت تحصيل.xlsm';
-const OUT_DIR    = path.join(__dirname, 'public', 'data');
+const OUT_DIR    = path.join(__dirname, '..', 'public', 'data');
 
 // ── Helpers ──────────────────────────────────────────────────
 function excelDateToISO(serial) {
