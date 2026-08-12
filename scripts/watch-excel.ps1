@@ -1,15 +1,8 @@
-# ╔══════════════════════════════════════════════════════════════╗
-# ║   watch-excel.ps1 — مراقب شيت التحصيل                       ║
-# ║   يراقب الشيت، وعند أي تعديل يصدّر JSON ويرفع على GitHub    ║
-# ╚══════════════════════════════════════════════════════════════╝
-
-# ── الإعدادات ──────────────────────────────────────────────────
-$ExcelPath   = "D:\Mostafa Ibrahim\شيت تحصيل.xlsm"
+$ExcelFolder = "D:\Mostafa Ibrahim"
 $ProjectPath = "G:\tahseel"
 $ScriptPath  = "$ProjectPath\scripts\export-excel.cjs"
-$NodePath    = "node"    # لو node مش في PATH غيّر لـ "C:\Program Files\nodejs\node.exe"
+$NodePath    = "node"
 
-# ── تسجيل الحدث ────────────────────────────────────────────────
 function Write-Log {
     param([string]$Message, [string]$Level = "INFO")
     $time = Get-Date -Format "HH:mm:ss"
@@ -22,76 +15,59 @@ function Write-Log {
     Write-Host "[$time] $Message" -ForegroundColor $color
 }
 
-# ── دالة التصدير والرفع ─────────────────────────────────────────
 function Sync-Sheet {
-    Write-Log "🔄 تغيير مُكتشف في الشيت — جاري التصدير..." "WARN"
+    Write-Log "Change detected in Excel file - Exporting..." "WARN"
+    Start-Sleep -Milliseconds 1000
 
-    # انتظر نصف ثانية (لحين إغلاق Excel للملف)
-    Start-Sleep -Milliseconds 800
-
-    # تشغيل سكريبت التصدير
     try {
         $result = & $NodePath $ScriptPath 2>&1
         Write-Log $result "OK"
     } catch {
-        Write-Log "❌ فشل تشغيل سكريبت التصدير: $_" "ERROR"
+        Write-Log "Failed to run export script: $_" "ERROR"
         return
     }
 
-    # الانتقال لمجلد المشروع
     Set-Location $ProjectPath
 
-    # التحقق من وجود تغييرات
     $status = git status --porcelain
-    if (-not $status) {
-        Write-Log "⏭️  لا توجد تغييرات جديدة للرفع" "INFO"
-        return
-    }
-
-    # إضافة وحفظ ورفع
-    try {
-        git add public/data/
-        $msg = "data: تحديث تلقائي من الشيت $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
-        git commit -m $msg
-        git push origin main
-        Write-Log "🚀 تم الرفع على GitHub بنجاح! Vercel سيحدّث الداشبورد تلقائياً." "OK"
-    } catch {
-        Write-Log "❌ فشل الرفع على GitHub: $_" "ERROR"
+    if ($status) {
+        try {
+            git add public/data/
+            $msg = "data: auto-sync $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+            git commit -m $msg
+            git push origin main
+            Write-Log "Pushed JSON to main branch. Vercel will now deploy automatically!" "OK"
+        } catch {
+            Write-Log "Failed to push to main: $_" "ERROR"
+        }
+    } else {
+        Write-Log "No new JSON changes to commit to main." "INFO"
     }
 }
 
-# ── إعداد المراقب ──────────────────────────────────────────────
-$folder   = Split-Path $ExcelPath -Parent
-$filename = Split-Path $ExcelPath -Leaf
-
-Write-Log "🟢 بدأ مراقبة الشيت..."
-Write-Log "   المسار: $ExcelPath"
-Write-Log "   المشروع: $ProjectPath"
-Write-Log ""
-Write-Log "اضغط Ctrl+C لإيقاف المراقبة" "WARN"
-Write-Log "─────────────────────────────────────────────"
+Write-Log "Starting Excel file watcher..."
+Write-Log "Watching Folder: $ExcelFolder for .xlsm files"
+Write-Log "Press Ctrl+C to stop" "WARN"
+Write-Log "---------------------------------------------"
 
 $watcher = New-Object System.IO.FileSystemWatcher
-$watcher.Path   = $folder
-$watcher.Filter = "شيت تحصيل.xlsm"
+$watcher.Path   = $ExcelFolder
+$watcher.Filter = "*.xlsm"
 $watcher.NotifyFilter = [System.IO.NotifyFilters]'LastWrite'
 $watcher.EnableRaisingEvents = $true
 
-# ── لوب المراقبة الرئيسي ───────────────────────────────────────
 $lastSync = [DateTime]::MinValue
 
 while ($true) {
-    # انتظر حدث تعديل (10 ثوانٍ timeout ثم نعيد الفحص)
     $changed = $watcher.WaitForChanged([System.IO.WatcherChangeTypes]::Changed, 10000)
 
     if (-not $changed.TimedOut) {
-        # تجنب التشغيل المتكرر خلال 30 ثانية
         $now = Get-Date
         if (($now - $lastSync).TotalSeconds -ge 30) {
             $lastSync = $now
             Sync-Sheet
         } else {
-            Write-Log "⏳ تم التعديل مرة أخرى — انتظار 30 ثانية قبل المزامنة" "INFO"
+            Write-Log "Changes detected but ignoring due to 30s debounce" "INFO"
         }
     }
 }

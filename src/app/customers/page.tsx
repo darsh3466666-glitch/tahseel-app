@@ -30,7 +30,7 @@ function CustomerRow({ customer }: { customer: Customer }) {
 
   return (
     <Link
-      href={`/customers/${customer.id}`}
+      href={`/customers/details?id=${customer.id}`}
       className="block border-b last:border-b-0 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
       style={{ borderColor: 'var(--border)' }}
     >

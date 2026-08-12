@@ -1,5 +1,5 @@
 'use client';
-export default function CustomerDetailPage({ params }: { params: { id: string } }) {
+export default function CustomerDetailPage() {
   return (
     <div className="flex items-center justify-center h-64 text-center">
       <div>
