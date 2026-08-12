@@ -87,76 +87,82 @@ export default function DailyRoutePage() {
   return (
     <div className="pb-24">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border p-4">
-        <h1 className="text-xl font-bold flex items-center gap-2">
-          <Map className="w-6 h-6 text-primary" />
-          سير العمل اليومي
-        </h1>
-        <div className="mt-3">
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-muted-foreground">الإنجاز: {completedStops} من {totalStops}</span>
-            <span className="font-bold text-primary">{progressPercent}%</span>
+      <div className="sticky top-0 z-20 bg-background/90 backdrop-blur-xl border-b border-border/50 p-5">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary/10 text-primary">
+            <Map className="w-5 h-5" strokeWidth={2.5} />
           </div>
-          <div className="h-2 bg-muted rounded-full overflow-hidden">
-            <div className="h-full bg-primary transition-all" style={{ width: `${progressPercent}%` }} />
+          <h1 className="text-xl font-bold tracking-tight">سير العمل اليومي</h1>
+        </div>
+        <div className="bg-muted/30 p-4 rounded-2xl border border-border/50">
+          <div className="flex justify-between text-sm mb-2">
+            <span className="text-muted-foreground font-medium">الإنجاز: <strong className="text-foreground">{completedStops}</strong> من {totalStops}</span>
+            <span className="font-black text-primary">{progressPercent}%</span>
+          </div>
+          <div className="h-2.5 bg-muted/80 rounded-full overflow-hidden shadow-inner">
+            <div className="h-full bg-gradient-to-r from-primary/80 to-primary transition-all duration-700 ease-out" style={{ width: `${progressPercent}%` }} />
           </div>
         </div>
       </div>
 
       <div className="p-4 space-y-6">
         {Object.keys(grouped).length === 0 ? (
-          <div className="text-center py-12 bg-card rounded-2xl border border-border">
-            <Navigation className="w-12 h-12 text-muted-foreground mx-auto mb-3 opacity-50" />
-            <p className="font-medium text-foreground">لا يوجد عملاء في خط السير اليوم</p>
-            <p className="text-sm text-muted-foreground mt-1">تأكد من شيت الإكسيل (خط_سير)</p>
+          <div className="text-center py-16 px-6 bg-card rounded-[2rem] border-2 border-dashed border-border/60 shadow-sm flex flex-col items-center">
+            <div className="w-20 h-20 bg-muted rounded-full flex items-center justify-center mb-5">
+              <Navigation className="w-10 h-10 text-muted-foreground opacity-60" strokeWidth={1.5} />
+            </div>
+            <p className="text-lg font-bold text-foreground mb-2">لا يوجد عملاء في خط السير اليوم</p>
+            <p className="text-sm text-muted-foreground max-w-[250px] leading-relaxed">يرجى التأكد من تحديث شيت الإكسيل (خط_سير) والمزامنة.</p>
           </div>
         ) : (
           Object.entries(grouped).map(([region, data]) => (
-            <div key={region} className="bg-card rounded-2xl border border-border overflow-hidden shadow-sm">
+            <div key={region} className="bg-card rounded-[1.5rem] border border-border/60 overflow-hidden shadow-sm hover:shadow-md transition-all duration-300">
               <button 
                 onClick={() => toggleRegion(region)}
-                className="w-full flex items-center justify-between p-4 bg-muted/30 hover:bg-muted/50 transition-colors"
+                className="w-full flex items-center justify-between p-5 bg-muted/20 hover:bg-muted/40 transition-colors active:bg-muted/60"
               >
-                <div className="flex items-center gap-2">
-                  <h2 className="font-bold text-lg">{region}</h2>
-                  <span className="bg-primary/10 text-primary text-xs px-2 py-1 rounded-full font-medium">
-                    {data.completed}/{data.total}
+                <div className="flex items-center gap-3">
+                  <h2 className="font-bold text-lg tracking-tight">{region}</h2>
+                  <span className="bg-background border border-border/50 text-foreground text-xs px-2.5 py-1 rounded-full font-bold shadow-sm">
+                    {data.completed} / {data.total}
                   </span>
                 </div>
-                {expandedRegions[region] ? <ChevronUp className="w-5 h-5 text-muted-foreground" /> : <ChevronDown className="w-5 h-5 text-muted-foreground" />}
+                <div className={`p-1.5 rounded-full bg-background border border-border/50 transition-transform duration-300 ${expandedRegions[region] ? 'rotate-180' : ''}`}>
+                  <ChevronDown className="w-4 h-4 text-foreground" strokeWidth={2.5} />
+                </div>
               </button>
 
               {expandedRegions[region] && (
-                <div className="divide-y divide-border">
+                <div className="divide-y divide-border/50 bg-background/50">
                   {data.stops.map(stop => (
-                    <div key={stop.id} className="p-4 hover:bg-muted/10 transition-colors">
-                      <div className="flex justify-between items-start mb-3">
+                    <div key={stop.id} className="p-4 hover:bg-muted/20 transition-colors group">
+                      <div className="flex justify-between items-center gap-4">
                         <div 
-                          className="cursor-pointer group flex-1"
+                          className="cursor-pointer flex-1"
                           onClick={() => router.push(`/customers/details?id=${stop.customerId}`)}
                         >
-                          <h3 className="font-bold text-foreground group-hover:text-primary transition-colors">
+                          <h3 className="font-bold text-foreground text-sm group-hover:text-primary transition-colors leading-tight mb-1.5">
                             {stop.customerName}
                           </h3>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            المستهدف: <span className="font-bold text-destructive">{formatCurrency(stop.targetAmount)}</span>
+                          <p className="text-[11px] text-muted-foreground uppercase tracking-wider font-medium">
+                            المستهدف: <span className="font-bold text-foreground">{formatCurrency(stop.targetAmount)}</span>
                           </p>
                         </div>
                         
                         {stop.status === 'visited' ? (
-                          <div className="flex items-center gap-1 text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded-md text-sm font-medium">
-                            <CheckCircle2 className="w-4 h-4" />
+                          <div className="flex items-center gap-1.5 text-emerald-500 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide">
+                            <CheckCircle2 className="w-4 h-4" strokeWidth={2.5} />
                             تمت
                           </div>
                         ) : stop.status === 'skipped' ? (
-                          <div className="flex items-center gap-1 text-orange-500 bg-orange-500/10 px-2 py-1 rounded-md text-sm font-medium">
-                            <Clock className="w-4 h-4" />
+                          <div className="flex items-center gap-1.5 text-orange-500 bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide">
+                            <Clock className="w-4 h-4" strokeWidth={2.5} />
                             مؤجل
                           </div>
                         ) : (
                           <button 
                             onClick={() => openVisitModal(stop)}
-                            className="bg-primary text-primary-foreground px-3 py-1.5 rounded-lg text-sm font-medium hover:bg-primary/90 active:scale-95 transition-all"
+                            className="bg-primary text-primary-foreground px-4 py-2 rounded-xl text-sm font-bold shadow-sm hover:shadow-md hover:bg-primary/90 active:scale-95 transition-all whitespace-nowrap"
                           >
                             تسجيل رد
                           </button>

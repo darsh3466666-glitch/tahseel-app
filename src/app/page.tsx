@@ -124,25 +124,27 @@ export default function DashboardPage() {
 
       {/* Action Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Link href="/route" className="block bg-primary text-primary-foreground p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 relative overflow-hidden group">
+        <Link href="/route" className="block bg-gradient-to-br from-primary to-primary/90 text-primary-foreground p-6 rounded-[2rem] shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -mr-8 -mt-8 transition-transform group-hover:scale-150 duration-500"></div>
           <div className="relative z-10">
-            <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
-              <Map className="w-6 h-6" />
-              سير العمل اليومي
-            </h2>
-            <p className="text-primary-foreground/80 text-sm">عرض خط سير المناطق، أهداف التحصيل، وتسجيل الزيارات والردود.</p>
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center mb-4 shadow-sm">
+              <Map className="w-6 h-6 text-white" strokeWidth={2.5} />
+            </div>
+            <h2 className="text-2xl font-bold mb-2 tracking-tight">سير العمل اليومي</h2>
+            <p className="text-primary-foreground/80 text-sm leading-relaxed">عرض خط سير المناطق، أهداف التحصيل، وتسجيل الزيارات والردود بسهولة.</p>
           </div>
-          <Map className="absolute -left-6 -bottom-6 w-32 h-32 text-primary-foreground/10 group-hover:scale-110 transition-transform" />
+          <Map className="absolute -left-8 -bottom-8 w-40 h-40 text-black/5 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-500" strokeWidth={1} />
         </Link>
-        <Link href="/reports/daily" className="block bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-all transform hover:-translate-y-1 relative overflow-hidden group">
+        <Link href="/reports/daily" className="block bg-gradient-to-br from-card to-muted border border-border/50 p-6 rounded-[2rem] shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden group">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-2xl -mr-8 -mt-8 transition-transform group-hover:scale-150 duration-500"></div>
           <div className="relative z-10">
-            <h2 className="text-2xl font-bold mb-2 flex items-center gap-2 text-foreground">
-              <FileText className="w-6 h-6 text-primary" />
-              التقرير الختامي
-            </h2>
-            <p className="text-muted-foreground text-sm">استخراج تقرير مفصل بزيارات اليوم، الردود، والتقييم لمشاركته.</p>
+            <div className="w-12 h-12 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 shadow-sm group-hover:bg-primary/20 transition-colors duration-300">
+              <FileText className="w-6 h-6 text-primary" strokeWidth={2.5} />
+            </div>
+            <h2 className="text-2xl font-bold mb-2 tracking-tight text-foreground">التقرير الختامي</h2>
+            <p className="text-muted-foreground text-sm leading-relaxed">استخراج تقرير مفصل بزيارات اليوم، الردود، وتقييم الأداء لمشاركته فوراً.</p>
           </div>
-          <FileText className="absolute -left-6 -bottom-6 w-32 h-32 text-primary/5 group-hover:scale-110 transition-transform" />
+          <FileText className="absolute -left-8 -bottom-8 w-40 h-40 text-primary/5 group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500" strokeWidth={1} />
         </Link>
       </div>
 
