@@ -172,6 +172,39 @@ export async function seedFromJson(): Promise<{ seeded: boolean; source: string 
         collectorScore:   0,
       });
     }
+
+    // Seed Route Stops (سير العمل)
+    if (data.route.length > 0) {
+      await db.routes.clear();
+      await db.routeStops.clear();
+      
+      const routeId = generateId();
+      const today = now.slice(0, 10);
+      
+      await db.routes.add({
+        id: routeId,
+        date: today,
+        name: `خط سير ${today}`,
+        collectorName: 'مصطفى',
+        status: 'planned',
+        totalTarget: 0,
+        totalCollected: 0,
+        createdAt: now,
+      });
+
+      const routeStops = data.route.map((r: any, idx: number) => ({
+        id: generateId(),
+        routeId: routeId,
+        customerId: nameMap.get(r.customerName) || '',
+        customerName: r.customerName || '',
+        order: r.order || idx + 1,
+        status: 'pending' as const,
+        targetAmount: r.targetAmount || 0,
+        region: r.region || '',
+      }));
+
+      await db.routeStops.bulkAdd(routeStops);
+    }
   }
 
   // Save seed timestamp

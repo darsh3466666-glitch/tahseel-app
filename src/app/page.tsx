@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import {
   TrendingUp, Users, CreditCard, Eye, AlertTriangle,
-  CheckCircle, Clock, Target, Star, ArrowUpRight
+  CheckCircle, Clock, Target, Star, ArrowUpRight, Upload, Map, FileText, MapPin
 } from 'lucide-react';
 import { formatCurrency, formatPercent, formatDate, RISK_COLORS, RISK_LABELS } from '@/lib/utils/helpers';
 import type { Customer, DailyStats } from '@/types/domain';
@@ -122,8 +122,32 @@ export default function DashboardPage() {
         </p>
       </div>
 
+      {/* Action Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <Link href="/route" className="block bg-primary text-primary-foreground p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 relative overflow-hidden group">
+          <div className="relative z-10">
+            <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+              <Map className="w-6 h-6" />
+              سير العمل اليومي
+            </h2>
+            <p className="text-primary-foreground/80 text-sm">عرض خط سير المناطق، أهداف التحصيل، وتسجيل الزيارات والردود.</p>
+          </div>
+          <Map className="absolute -left-6 -bottom-6 w-32 h-32 text-primary-foreground/10 group-hover:scale-110 transition-transform" />
+        </Link>
+        <Link href="/reports/daily" className="block bg-card border border-border p-6 rounded-2xl shadow-sm hover:shadow-md transition-all transform hover:-translate-y-1 relative overflow-hidden group">
+          <div className="relative z-10">
+            <h2 className="text-2xl font-bold mb-2 flex items-center gap-2 text-foreground">
+              <FileText className="w-6 h-6 text-primary" />
+              التقرير الختامي
+            </h2>
+            <p className="text-muted-foreground text-sm">استخراج تقرير مفصل بزيارات اليوم، الردود، والتقييم لمشاركته.</p>
+          </div>
+          <FileText className="absolute -left-6 -bottom-6 w-32 h-32 text-primary/5 group-hover:scale-110 transition-transform" />
+        </Link>
+      </div>
+
       {/* Collection progress */}
-      {target > 0 ? (
+      {target > 0 && (
         <div className="card space-y-3">
           <div className="flex items-center justify-between">
             <h2 className="font-bold">تقدم التحصيل اليوم</h2>
@@ -136,14 +160,6 @@ export default function DashboardPage() {
             <span style={{ color: 'var(--muted-foreground)' }}>المحصّل: <strong style={{ color: '#16a34a' }}>{formatCurrency(collected)}</strong></span>
             <span style={{ color: 'var(--muted-foreground)' }}>الباقي: <strong style={{ color: '#dc2626' }}>{formatCurrency(remaining)}</strong></span>
           </div>
-        </div>
-      ) : (
-        <div className="card text-center py-6">
-          <Upload size={32} className="mx-auto mb-3 opacity-30" />
-          <p style={{ color: 'var(--muted-foreground)' }} className="text-sm">لا توجد بيانات اليوم</p>
-          <Link href="/import" className="mt-3 inline-block text-sm text-blue-600 hover:underline font-medium">
-            استيراد بيانات الشيت ←
-          </Link>
         </div>
       )}
 
@@ -261,5 +277,3 @@ export default function DashboardPage() {
   );
 }
 
-// Needed for icon imports
-import { Upload, MapPin } from 'lucide-react';
