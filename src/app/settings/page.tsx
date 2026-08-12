@@ -23,8 +23,6 @@ export default function SettingsPage() {
       const { settingsRepo } = await import('@/lib/db/settingsRepo');
       const settings = await settingsRepo.get();
       setValue('currency', settings.currency || 'EGP');
-      setValue('defaultPaymentTerms', settings.defaultPaymentTerms || '');
-      setValue('workingDays', settings.workingDays || [0, 1, 2, 3, 4]); // Sun-Thu
       setValue('nextAlarmEnabled', settings.nextAlarmEnabled ?? false);
       setValue('nextAlarmBaseUrl', settings.nextAlarmBaseUrl || DEFAULT_URL);
       setLoading(false);
@@ -36,7 +34,7 @@ export default function SettingsPage() {
     setSaving(true);
     try {
       const { settingsRepo } = await import('@/lib/db/settingsRepo');
-      await settingsRepo.update(data);
+      await settingsRepo.set(data);
       const { resetAdapter } = await import('@/lib/notifications/adapters');
       resetAdapter();
       alert('تم حفظ الإعدادات بنجاح');
@@ -148,16 +146,6 @@ export default function SettingsPage() {
                 <option value="EGP">جنيه مصري (ج.م)</option>
                 <option value="USD">دولار أمريكي ($)</option>
               </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">شروط السداد الافتراضية</label>
-              <input
-                type="text"
-                {...register('defaultPaymentTerms')}
-                className="w-full px-3 py-2 rounded-lg border text-sm"
-                style={{ background: 'var(--input-bg)', borderColor: 'var(--input-border)', color: 'var(--foreground)' }}
-                placeholder="مثال: نقدي 100%"
-              />
             </div>
           </div>
         </div>
