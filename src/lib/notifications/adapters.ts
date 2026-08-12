@@ -184,14 +184,31 @@ export class NextAlarmAdapter implements NotificationAdapter {
     // Next Alarm doesn't have a read concept; no-op
   }
 
-  async test(chatId: string): Promise<{ success: boolean; message: string }> {
+  async test(chatId?: string): Promise<{ success: boolean; message: string }> {
     try {
+      let targetChatId = chatId;
+      
+      // If no chatId provided, try to fetch one from the server's contacts
+      if (!targetChatId || targetChatId === 'test-chat-id') {
+        try {
+          const contactsRes = await this.fetch('/api/contacts');
+          if (contactsRes.ok) {
+            const contacts = await contactsRes.json();
+            if (contacts && contacts.length > 0) {
+              targetChatId = contacts[0].chatId;
+            }
+          }
+        } catch (e) {
+          console.warn('Could not fetch contacts for test', e);
+        }
+      }
+
       const res = await this.fetch('/api/contacts/test', {
         method: 'POST',
-        body: JSON.stringify({ chatId, name: 'منظومة التحصيل' }),
+        body: JSON.stringify({ chatId: targetChatId || '123456789', name: 'منظومة التحصيل' }),
       });
       const data = await res.json();
-      return { success: data.success, message: data.message ?? data.error ?? '' };
+      return { success: data.success ?? false, message: data.message ?? data.error ?? 'حدث خطأ' };
     } catch (err) {
       return { success: false, message: 'فشل الاتصال بخادم Next Alarm' };
     }
